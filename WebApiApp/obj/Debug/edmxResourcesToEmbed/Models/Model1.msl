@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="WebApiDBModelStoreContainer" CdmEntityContainer="DBEntities">
+    <EntitySetMapping Name="myTasks">
+      <EntityTypeMapping TypeName="WebApiDBModel.myTask">
+        <MappingFragment StoreEntitySet="myTask">
+          <ScalarProperty Name="taskid" ColumnName="taskid" />
+          <ScalarProperty Name="taskname" ColumnName="taskname" />
+          <ScalarProperty Name="taskdetails" ColumnName="taskdetails" />
+          <ScalarProperty Name="referdby" ColumnName="referdby" />
+          <ScalarProperty Name="requestDate" ColumnName="requestDate" />
+          <ScalarProperty Name="taskStatus" ColumnName="taskStatus" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

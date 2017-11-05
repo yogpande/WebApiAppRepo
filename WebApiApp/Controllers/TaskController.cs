@@ -12,93 +12,32 @@ using WebApiApp.Models;
 
 namespace WebApiApp.Controllers
 {
-    public class TaskController : ApiController
+   
+      
+     public class UserAPIController : BaseAPIController
     {
         private DBEntities db = new DBEntities();
 
-        // GET: api/Task
-        public IQueryable<myTask> GetmyTasks()
+        public HttpResponseMessage Get()
         {
-            return db.myTasks;
+            return ToJson(UserDB.udatas.AsEnumerable());
         }
 
-        // GET: api/Task/5
-        [ResponseType(typeof(myTask))]
-        public IHttpActionResult GetmyTask(int id)
+        public HttpResponseMessage Post([FromBody]udata value)
         {
-            myTask myTask = db.myTasks.Find(id);
-            if (myTask == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(myTask);
+            UserDB.udatas.Add(value);
+            return ToJson(UserDB.SaveChanges());
         }
 
-        // PUT: api/Task/5
-        [ResponseType(typeof(void))]
-        public IHttpActionResult PutmyTask(int id, myTask myTask)
+        public HttpResponseMessage Put(int id, [FromBody]udata value)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            if (id != myTask.taskid)
-            {
-                return BadRequest();
-            }
-
-            db.Entry(myTask).State = EntityState.Modified;
-
-            try
-            {
-                db.SaveChanges();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!myTaskExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return StatusCode(HttpStatusCode.NoContent);
+            UserDB.Entry(value).State = EntityState.Modified;
+            return ToJson(UserDB.SaveChanges());
         }
-
-        // POST: api/Task
-        [ResponseType(typeof(myTask))]
-        public IHttpActionResult PostmyTask(myTask myTask)
+        public HttpResponseMessage Delete(int id)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            db.myTasks.Add(myTask);
-            db.SaveChanges();
-
-            return Ok("Success");
-        }
-
-        // DELETE: api/Task/5
-        [ResponseType(typeof(myTask))]
-        public IHttpActionResult DeletemyTask(int id)
-        {
-            myTask myTask = db.myTasks.Find(id);
-            if (myTask == null)
-            {
-                return NotFound();
-            }
-
-            db.myTasks.Remove(myTask);
-            db.SaveChanges();
-
-            return Ok(myTask);
+            UserDB.udatas.Remove(UserDB.udatas.FirstOrDefault(x => x.uid == id));
+            return ToJson(UserDB.SaveChanges());
         }
 
         protected override void Dispose(bool disposing)
@@ -110,9 +49,9 @@ namespace WebApiApp.Controllers
             base.Dispose(disposing);
         }
 
-        private bool myTaskExists(int id)
+        private bool udataExists(int id)
         {
-            return db.myTasks.Count(e => e.taskid == id) > 0;
+            return db.udatas.Count(e => e.uid == id) > 0;
         }
     }
 }
